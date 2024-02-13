@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarmentRecordSystem", "GarmentRecordSystem\GarmentRecordSystem.csproj", "{8829D22A-A77B-418A-AD0A-AB01EC9D6E94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleBasedUI", "ConsoleBasedUI\ConsoleBasedUI.csproj", "{8313034E-A882-477E-B4F4-3546B07ADD55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8829D22A-A77B-418A-AD0A-AB01EC9D6E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8829D22A-A77B-418A-AD0A-AB01EC9D6E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8829D22A-A77B-418A-AD0A-AB01EC9D6E94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8313034E-A882-477E-B4F4-3546B07ADD55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8313034E-A882-477E-B4F4-3546B07ADD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8313034E-A882-477E-B4F4-3546B07ADD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8313034E-A882-477E-B4F4-3546B07ADD55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
