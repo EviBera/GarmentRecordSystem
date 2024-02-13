@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GarmentRecordSystem.Services
 {
-    internal class GarmentService : IGarmentService
+    public class GarmentService : IGarmentService
     {
 
         private List<Garment> _garments = new List<Garment>();

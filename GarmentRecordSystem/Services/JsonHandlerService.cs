@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GarmentRecordSystem.Services
 {
-    internal class JsonHandlerService : IJsonHandlerService
+    public class JsonHandlerService : IJsonHandlerService
     {
         public List<Garment> LoadFromFile(string filePath)
         {
