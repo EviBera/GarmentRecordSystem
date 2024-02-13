@@ -10,9 +10,9 @@ namespace GarmentRecordSystem.Services
     public interface IGarmentService
     {
         void AddGarment(Garment garment);
-        void UpdateGarment(uint garmentID);
+        void UpdateGarment(uint garmentID, Garment newGarment);
         void DeleteGarment(uint garmentID);
         Garment SearchGarment(uint garmentID);
-        List<Garment> SortGarments(string sortBy);
+        List<Garment> SortGarments(SortGarmentsCriteria sortBy);
     }
 }
