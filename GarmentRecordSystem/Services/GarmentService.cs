@@ -58,5 +58,11 @@ namespace GarmentRecordSystem.Services
                 throw new Exception("Garment not found");
             }
         }
+
+        //Provide a safe copy for checking the app
+        public List<Garment> GetAllGarments()
+        {
+            return new List<Garment>(_garments);
+        }
     }
 }

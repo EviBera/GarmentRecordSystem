@@ -14,5 +14,6 @@ namespace GarmentRecordSystem.Services
         void DeleteGarment(uint garmentID);
         Garment SearchGarment(uint garmentID);
         List<Garment> SortGarments(SortGarmentsCriteria sortBy);
+        List<Garment> GetAllGarments();
     }
 }
