@@ -117,7 +117,15 @@ void UpdateGarment()
     var newPurchase = UpdatePurchase(oldGarment);
     var newSize = UpdateSize(oldGarment);
 
-    garmentService.UpdateGarment(id, newBrandName, newPurchase, newColor, newSize);
+    try
+    {
+        garmentService.UpdateGarment(id, newBrandName, newPurchase, newColor, newSize);
+        Console.WriteLine("Garment udated successfully. (Not saved into file yet.)");
+    }
+    catch(Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+    }
 
     ShowMeWhatHappened();
 }
@@ -140,7 +148,17 @@ void DeleteGarment()
         return;
     }
 
-    garmentService.DeleteGarment(id);
+    try
+    {
+        garmentService.DeleteGarment(id);
+        Console.WriteLine("Garment deleted successfully. (Changes are not saved into file yet.)");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+    }
+
+    ShowMeWhatHappened();
 }
 
 void SearchGarment()
@@ -161,6 +179,7 @@ void SearchGarment()
         return;
     } else
     {
+        Console.WriteLine("The garment you are looking for:");
         Console.WriteLine(garment.ToString());
     }
 
@@ -188,12 +207,7 @@ void DisplayTheWholeCollection()
     var garments = jsonHandlerService.LoadFromFile(filePath);
     foreach (var garment in garments)
     {
-        Console.WriteLine("ID: " + garment.GarmentID);
-        Console.WriteLine("Brand: " + garment.BrandName);
-        Console.WriteLine("Date of purchase: " + garment.PurchaseDate);
-        Console.WriteLine("Color: " + garment.Color);
-        Console.WriteLine("Size: " + garment.Size + "\n");
-
+        Console.WriteLine(garment.ToString());
     }
 }
 
@@ -298,7 +312,7 @@ void ShowMeWhatHappened()
     var garments = garmentService.GetAllGarments();
     foreach (var garment in garments)
     {
-        Console.WriteLine(garment.BrandName + " " + garment.GarmentID);
+        Console.WriteLine(garment.ToString());
     }
 
 }
