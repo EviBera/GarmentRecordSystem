@@ -26,5 +26,10 @@ namespace GarmentRecordSystem.Models
             Size = size;
         }
 
+        public override string ToString()
+        {
+            return "ID: " + GarmentID + ", brand name: " + BrandName + ", purchased: " + PurchaseDate + ", color: " + Color + ", size: " + Size;
+        }
+
     }
 }
