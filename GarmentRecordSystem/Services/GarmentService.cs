@@ -46,12 +46,15 @@ namespace GarmentRecordSystem.Services
             }
         }
 
-        public void UpdateGarment(uint garmentID, Garment newGarment)
+        public void UpdateGarment(uint garmentID, string brandName, DateOnly purchase, string color, Size size)
         {
             var oldGarment = _garments.FirstOrDefault(g => g.GarmentID == garmentID);
             if (oldGarment != null)
             {
-                oldGarment = newGarment;
+                oldGarment.BrandName = brandName;
+                oldGarment.PurchaseDate = purchase;
+                oldGarment.Color = color;
+                oldGarment.Size = size;
             } 
             else
             {
