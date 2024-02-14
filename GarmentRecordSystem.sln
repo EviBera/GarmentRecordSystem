@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarmentRecordSystem", "GarmentRecordSystem\GarmentRecordSystem.csproj", "{8829D22A-A77B-418A-AD0A-AB01EC9D6E94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GarmentRecordSystem", "GarmentRecordSystem\GarmentRecordSystem.csproj", "{8829D22A-A77B-418A-AD0A-AB01EC9D6E94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleBasedUI", "ConsoleBasedUI\ConsoleBasedUI.csproj", "{8313034E-A882-477E-B4F4-3546B07ADD55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleBasedUI", "ConsoleBasedUI\ConsoleBasedUI.csproj", "{8313034E-A882-477E-B4F4-3546B07ADD55}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6DB96FA4-0FBC-4D9A-BECC-0D92C2CCB53F}"
+	ProjectSection(SolutionItems) = preProject
+		ConsoleBasedUI\bin\Debug\net7.0\garments.json = ConsoleBasedUI\bin\Debug\net7.0\garments.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
