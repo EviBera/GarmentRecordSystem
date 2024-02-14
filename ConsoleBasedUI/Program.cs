@@ -6,10 +6,10 @@ using System.Numerics;
 IGarmentService garmentService = new GarmentService();
 IJsonHandlerService jsonHandlerService = new JsonHandlerService();
 
-HandleUI();
+HandleMainMenu();
 
 
-void HandleUI()
+void HandleMainMenu()
 {
     bool exit = false;
     while (!exit)
@@ -32,7 +32,9 @@ void HandleUI()
 
         if (!isValidInput)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nInvalid option. Enter a number.");
+            Console.ForegroundColor = ConsoleColor.White;
             continue;
         }
 
@@ -67,7 +69,9 @@ void HandleUI()
                 break;
         
             default:
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nInvalid option. Please try again.");
+                Console.ForegroundColor = ConsoleColor.White;
                 break;
         }
     }
@@ -84,7 +88,9 @@ void AddGarment()
     try
     {
         garmentService.AddGarment(new Garment(brandName, purchaseDate, color, size));
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("\nGarment added successfully. (Not saved into file yet.)");
+        Console.ForegroundColor = ConsoleColor.White;
     }
     catch(Exception ex)
     {
@@ -102,13 +108,17 @@ void UpdateGarment()
 
     if (!uint.TryParse(idInput, out id))
     {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nInvalid ID format.");
+        Console.ForegroundColor = ConsoleColor.White;
         return;
     }
     Garment? oldGarment = garmentService.SearchGarment(id);
     if(oldGarment == null)
     {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nInvalid ID, garment not found.");
+        Console.ForegroundColor = ConsoleColor.White;
         return;
     }
 
@@ -120,7 +130,9 @@ void UpdateGarment()
     try
     {
         garmentService.UpdateGarment(id, newBrandName, newPurchase, newColor, newSize);
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("\nGarment udated successfully. (Not saved into file yet.)");
+        Console.ForegroundColor = ConsoleColor.White;
     }
     catch(Exception ex)
     {
@@ -138,20 +150,26 @@ void DeleteGarment()
 
     if (!uint.TryParse(idInput, out id))
     {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nInvalid ID format.");
+        Console.ForegroundColor = ConsoleColor.White;
         return;
     }
     Garment? garment = garmentService.SearchGarment(id);
     if (garment == null)
     {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nInvalid ID, garment not found.");
+        Console.ForegroundColor = ConsoleColor.White;
         return;
     }
 
     try
     {
         garmentService.DeleteGarment(id);
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("\nGarment deleted successfully. (Changes are not saved into file yet.)");
+        Console.ForegroundColor = ConsoleColor.White;
     }
     catch (Exception ex)
     {
@@ -169,13 +187,17 @@ void SearchGarment()
 
     if (!uint.TryParse(idInput, out id))
     {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nInvalid ID format.");
+        Console.ForegroundColor = ConsoleColor.White;
         return;
     }
     Garment? garment = garmentService.SearchGarment(id);
     if (garment == null)
     {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("\nInvalid ID, garment not found.");
+        Console.ForegroundColor = ConsoleColor.White;
         return;
     } else
     {
@@ -212,7 +234,9 @@ void SortGarments()
             sortedList = garmentService.SortGarments(SortGarmentsCriteria.Color);
             break;
         default:
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nInvalid option. Please select a valid number (1 - 4).");
+            Console.ForegroundColor = ConsoleColor.White;
             break;
     }
 
@@ -234,15 +258,21 @@ void SaveGarmentsToFile()
 
         if (string.IsNullOrWhiteSpace(path))
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("The file path cannot be empty. Please enter a valid path.");
+            Console.ForegroundColor = ConsoleColor.White;
         }
         else if (path.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("The file path contains invalid characters. Please enter a valid path.");
+            Console.ForegroundColor = ConsoleColor.White;
         }
         else if (!path.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("The file must be a .json file. Please enter a valid file path ending with '.json'.");
+            Console.ForegroundColor = ConsoleColor.White;
         }
         else
         {
@@ -254,7 +284,9 @@ void SaveGarmentsToFile()
     try
     {
         jsonHandlerService.SaveToFile(path, garmentService.GetAllGarments());
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("File saved successfully.");
+        Console.ForegroundColor = ConsoleColor.White;
     }
     catch (Exception ex)
     {
@@ -273,19 +305,27 @@ void LoadGarmentsFromFile()
 
         if (string.IsNullOrWhiteSpace(path))
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("The file path cannot be empty. Please enter a valid path.");
+            Console.ForegroundColor = ConsoleColor.White;
         }
         else if (path.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("The file path contains invalid characters. Please enter a valid path.");
+            Console.ForegroundColor = ConsoleColor.White;
         }
         else if (!File.Exists(path))
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("The file does not exist. Please enter a valid path to an existing file.");
+            Console.ForegroundColor = ConsoleColor.White;
         } 
         else if (!path.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("The file must be a .json file. Please enter a valid file path ending with '.json'.");
+            Console.ForegroundColor = ConsoleColor.White;
         }
         else
         {
@@ -298,7 +338,9 @@ void LoadGarmentsFromFile()
     {
         var garments = jsonHandlerService.LoadFromFile(path);
         garmentService.ReplaceGarmentList(garments);
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("File loaded successfully.");
+        Console.ForegroundColor = ConsoleColor.White;
     }
     catch (Exception ex)
     {
@@ -329,12 +371,16 @@ string RegisterString(string arg)
 
         if (string.IsNullOrWhiteSpace(data))
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(arg + " cannot be empty. Please enter valid data.");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         else if (data.Length > 50)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(arg + " cannot exceed 50 characters. Please enter a shorter text.");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         else
@@ -342,7 +388,9 @@ string RegisterString(string arg)
             int specialCharCount = data.Count(c => Path.GetInvalidFileNameChars().Contains(c));
             if (specialCharCount > 1)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(arg + " can contain at most one special character. Please revise your input.");
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
@@ -369,7 +417,9 @@ DateOnly RegisterPurchaseDate()
 
         if (!isValidDate)
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\nInvalid date format. Please enter the date in the format yyyy-mm-dd.");
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 
@@ -405,7 +455,9 @@ Size RegisterSize()
                 validSize = true;
                 break;
             default:
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\nInvalid option. Please enter S, M, L, or XL.");
+                Console.ForegroundColor = ConsoleColor.White;
                 break;
         }
     }
