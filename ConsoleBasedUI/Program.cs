@@ -32,7 +32,7 @@ void HandleUI()
 
         if (!isValidInput)
         {
-            Console.WriteLine("Invalid option. Enter a number.");
+            Console.WriteLine("\nInvalid option. Enter a number.");
             continue;
         }
 
@@ -67,7 +67,7 @@ void HandleUI()
                 break;
         
             default:
-                Console.WriteLine("Invalid option. Please try again.");
+                Console.WriteLine("\nInvalid option. Please try again.");
                 break;
         }
     }
@@ -84,7 +84,7 @@ void AddGarment()
     try
     {
         garmentService.AddGarment(new Garment(brandName, purchaseDate, color, size));
-        Console.WriteLine("Garment added successfully. (Not saved into file yet.)");
+        Console.WriteLine("\nGarment added successfully. (Not saved into file yet.)");
     }
     catch(Exception ex)
     {
@@ -96,19 +96,19 @@ void AddGarment()
 
 void UpdateGarment()
 {
-    Console.WriteLine("Enter the ID of the garment that needs an update: ");
+    Console.Write("\nEnter the ID of the garment that needs an update: ");
     var idInput = Console.ReadLine();
     uint id;
 
     if (!uint.TryParse(idInput, out id))
     {
-        Console.WriteLine("Invalid ID format.");
+        Console.WriteLine("\nInvalid ID format.");
         return;
     }
     Garment? oldGarment = garmentService.SearchGarment(id);
     if(oldGarment == null)
     {
-        Console.WriteLine("Invalid ID, garment not found.");
+        Console.WriteLine("\nInvalid ID, garment not found.");
         return;
     }
 
@@ -120,7 +120,7 @@ void UpdateGarment()
     try
     {
         garmentService.UpdateGarment(id, newBrandName, newPurchase, newColor, newSize);
-        Console.WriteLine("Garment udated successfully. (Not saved into file yet.)");
+        Console.WriteLine("\nGarment udated successfully. (Not saved into file yet.)");
     }
     catch(Exception ex)
     {
@@ -132,26 +132,26 @@ void UpdateGarment()
 
 void DeleteGarment()
 {
-    Console.WriteLine("Which garment would you like to delete? Enter ID: ");
+    Console.Write("\nWhich garment would you like to delete? Enter ID: ");
     var idInput = Console.ReadLine();
     uint id;
 
     if (!uint.TryParse(idInput, out id))
     {
-        Console.WriteLine("Invalid ID format.");
+        Console.WriteLine("\nInvalid ID format.");
         return;
     }
     Garment? garment = garmentService.SearchGarment(id);
     if (garment == null)
     {
-        Console.WriteLine("Invalid ID, garment not found.");
+        Console.WriteLine("\nInvalid ID, garment not found.");
         return;
     }
 
     try
     {
         garmentService.DeleteGarment(id);
-        Console.WriteLine("Garment deleted successfully. (Changes are not saved into file yet.)");
+        Console.WriteLine("\nGarment deleted successfully. (Changes are not saved into file yet.)");
     }
     catch (Exception ex)
     {
@@ -163,23 +163,23 @@ void DeleteGarment()
 
 void SearchGarment()
 {
-    Console.WriteLine("Which garment would you like to see? Enter ID: ");
+    Console.Write("\nWhich garment would you like to see? Enter ID: ");
     var idInput = Console.ReadLine();
     uint id;
 
     if (!uint.TryParse(idInput, out id))
     {
-        Console.WriteLine("Invalid ID format.");
+        Console.WriteLine("\nInvalid ID format.");
         return;
     }
     Garment? garment = garmentService.SearchGarment(id);
     if (garment == null)
     {
-        Console.WriteLine("Invalid ID, garment not found.");
+        Console.WriteLine("\nInvalid ID, garment not found.");
         return;
     } else
     {
-        Console.WriteLine("The garment you are looking for:");
+        Console.WriteLine("\nThe garment you are looking for:");
         Console.WriteLine(garment.ToString());
     }
 
@@ -187,7 +187,40 @@ void SearchGarment()
 
 void SortGarments()
 {
-    Console.WriteLine("SortGarment method");
+    List<Garment> sortedList = new();
+
+    Console.WriteLine("\nYou can select which factor use for sorting.");
+    Console.WriteLine("1. Sort by brand name");
+    Console.WriteLine("2. Sort by date of purchase");
+    Console.WriteLine("3. Sort by size");
+    Console.WriteLine("4. Sort by color");
+    Console.Write("Enter your choice: ");
+
+    string answer = Console.ReadLine();
+    switch(answer)
+    {
+        case "1":
+            sortedList = garmentService.SortGarments(SortGarmentsCriteria.BrandName);
+            break;
+        case "2":
+            sortedList = garmentService.SortGarments(SortGarmentsCriteria.PurchaseDate);
+            break;
+        case "3":
+            sortedList = garmentService.SortGarments(SortGarmentsCriteria.Size);
+            break;
+        case "4":
+            sortedList = garmentService.SortGarments(SortGarmentsCriteria.Color);
+            break;
+        default:
+            Console.WriteLine("\nInvalid option. Please select a valid number (1 - 4).");
+            break;
+    }
+
+    Console.WriteLine("\nThe garments sorted by your choice: \n");
+    foreach (Garment g in sortedList)
+    {
+        Console.WriteLine(g.ToString());
+    }
 }
 
 void SaveGarmentsToFile()
@@ -263,7 +296,7 @@ DateOnly RegisterPurchaseDate()
 
         if (!isValidDate)
         {
-            Console.WriteLine("Invalid date format. Please enter the date in the format yyyy-mm-dd.");
+            Console.WriteLine("\nInvalid date format. Please enter the date in the format yyyy-mm-dd.");
         }
     }
 
@@ -299,7 +332,7 @@ Size RegisterSize()
                 validSize = true;
                 break;
             default:
-                Console.WriteLine("Invalid option. Please enter S, M, L, or XL.");
+                Console.WriteLine("\nInvalid option. Please enter S, M, L, or XL.");
                 break;
         }
     }
@@ -318,12 +351,12 @@ void ShowMeWhatHappened()
 }
 
 string UpdateBrandName(Garment oldGarment){
-    Console.WriteLine("Current brand name is: " + oldGarment.BrandName);
+    Console.WriteLine("\nCurrent brand name is: " + oldGarment.BrandName);
     bool isValid = false;
     string newBrandName = oldGarment.BrandName;
     while (!isValid)
     {
-        Console.WriteLine("Would you like to change it (y / n)?");
+        Console.WriteLine("\nWould you like to change it (y / n)?");
         var answer = Console.ReadLine();
         if (answer.ToLower() == "n")
         {
@@ -338,12 +371,12 @@ string UpdateBrandName(Garment oldGarment){
     return newBrandName;
 }
 string UpdateColor(Garment oldGarment){
-    Console.WriteLine("Current color is: " + oldGarment.Color);
+    Console.WriteLine("\nCurrent color is: " + oldGarment.Color);
     bool isValid = false;
     string newColor = oldGarment.Color;
     while (!isValid)
     {
-        Console.WriteLine("Would you like to change it (y / n)?");
+        Console.WriteLine("\nWould you like to change it (y / n)?");
         var answer = Console.ReadLine();
         if (answer.ToLower() == "n")
         {
@@ -358,12 +391,12 @@ string UpdateColor(Garment oldGarment){
     return newColor;
 }
 DateOnly UpdatePurchase(Garment oldGarment){
-    Console.WriteLine("Date of purchase is: " + oldGarment.PurchaseDate);
+    Console.WriteLine("\nDate of purchase is: " + oldGarment.PurchaseDate);
     bool isValid = false;
     DateOnly newPurchase = oldGarment.PurchaseDate;
     while (!isValid)
     {
-        Console.WriteLine("Would you like to change it (y / n)?");
+        Console.WriteLine("\nWould you like to change it (y / n)?");
         var answer = Console.ReadLine();
         if (answer.ToLower() == "n")
         {
@@ -378,12 +411,12 @@ DateOnly UpdatePurchase(Garment oldGarment){
     return newPurchase;
 }
 Size UpdateSize(Garment oldGarment){
-    Console.WriteLine("Currest size is: " + oldGarment.Size);
+    Console.WriteLine("\nCurrest size is: " + oldGarment.Size);
     bool isValid = false;
     Size newSize = oldGarment.Size;
     while (!isValid)
     {
-        Console.WriteLine("Would you like to change it (y / n)?");
+        Console.WriteLine("\nWould you like to change it (y / n)?");
         var answer = Console.ReadLine();
         if (answer.ToLower() == "n")
         {
