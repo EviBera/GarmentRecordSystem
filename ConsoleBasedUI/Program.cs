@@ -1,10 +1,10 @@
 ﻿using GarmentRecordSystem;
 using GarmentRecordSystem.Services;
 using GarmentRecordSystem.Models;
+using System.Numerics;
 
 IGarmentService garmentService = new GarmentService();
 IJsonHandlerService jsonHandlerService = new JsonHandlerService();
-string filePath = "garments.json";
 
 HandleUI();
 
@@ -88,7 +88,7 @@ void AddGarment()
     }
     catch(Exception ex)
     {
-        Console.WriteLine(ex.ToString());
+        Console.WriteLine(ex.Message);
     }
 
     ShowMeWhatHappened();
@@ -124,7 +124,7 @@ void UpdateGarment()
     }
     catch(Exception ex)
     {
-        Console.WriteLine(ex.ToString());
+        Console.WriteLine(ex.Message);
     }
 
     ShowMeWhatHappened();
@@ -155,7 +155,7 @@ void DeleteGarment()
     }
     catch (Exception ex)
     {
-        Console.WriteLine(ex.ToString());
+        Console.WriteLine(ex.Message);
     }
 
     ShowMeWhatHappened();
@@ -230,7 +230,47 @@ void SaveGarmentsToFile()
 
 void LoadGarmentsFromFile()
 {
-    Console.WriteLine("Garments loaded from file successfully.");
+    bool isValid = false;
+    string path = String.Empty;
+    while (!isValid)
+    {
+        Console.Write("\nEnter required file path: ");
+        path = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            Console.WriteLine("The file path cannot be empty. Please enter a valid path.");
+        }
+        else if (path.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
+        {
+            Console.WriteLine("The file path contains invalid characters. Please enter a valid path.");
+        }
+        else if (!File.Exists(path))
+        {
+            Console.WriteLine("The file does not exist. Please enter a valid path to an existing file.");
+        } 
+        else if (!path.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("The file must be a .json file. Please enter a valid file path ending with '.json'.");
+        }
+        else
+        {
+            isValid = true;
+        }
+
+    }
+
+    try
+    {
+        var garments = jsonHandlerService.LoadFromFile(path);
+        garmentService.ReplaceGarmentList(garments);
+        Console.WriteLine("File loaded successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+    
 }
 
 void DisplayTheWholeCollection()
@@ -242,6 +282,13 @@ void DisplayTheWholeCollection()
     {
         Console.WriteLine(garment.ToString());
     }
+
+    Console.WriteLine("\nIn-memory garments: \n");
+    foreach(var garment in garmentService.GetAllGarments())
+    {
+        Console.WriteLine(garment.ToString());
+    }
+
 }
 
 string RegisterString(string arg)
