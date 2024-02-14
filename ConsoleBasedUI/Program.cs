@@ -124,12 +124,46 @@ void UpdateGarment()
 
 void DeleteGarment()
 {
-    Console.WriteLine("DeleteGarment method");
+    Console.WriteLine("Which garment would you like to delete? Enter ID: ");
+    var idInput = Console.ReadLine();
+    uint id;
+
+    if (!uint.TryParse(idInput, out id))
+    {
+        Console.WriteLine("Invalid ID format.");
+        return;
+    }
+    Garment? garment = garmentService.SearchGarment(id);
+    if (garment == null)
+    {
+        Console.WriteLine("Invalid ID, garment not found.");
+        return;
+    }
+
+    garmentService.DeleteGarment(id);
 }
 
 void SearchGarment()
 {
-    Console.WriteLine("SearchGarment method");
+    Console.WriteLine("Which garment would you like to see? Enter ID: ");
+    var idInput = Console.ReadLine();
+    uint id;
+
+    if (!uint.TryParse(idInput, out id))
+    {
+        Console.WriteLine("Invalid ID format.");
+        return;
+    }
+    Garment? garment = garmentService.SearchGarment(id);
+    if (garment == null)
+    {
+        Console.WriteLine("Invalid ID, garment not found.");
+        return;
+    } else
+    {
+        Console.WriteLine(garment.ToString());
+    }
+
 }
 
 void SortGarments()
