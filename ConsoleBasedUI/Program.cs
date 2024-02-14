@@ -225,7 +225,41 @@ void SortGarments()
 
 void SaveGarmentsToFile()
 {
-    Console.WriteLine("Garments saved to file successfully.");
+    bool isValid = false;
+    string path = String.Empty;
+    while (!isValid)
+    {
+        Console.Write("\nEnter file path for saving data: ");
+        path = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            Console.WriteLine("The file path cannot be empty. Please enter a valid path.");
+        }
+        else if (path.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
+        {
+            Console.WriteLine("The file path contains invalid characters. Please enter a valid path.");
+        }
+        else if (!path.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("The file must be a .json file. Please enter a valid file path ending with '.json'.");
+        }
+        else
+        {
+            isValid = true;
+        }
+
+    }
+
+    try
+    {
+        jsonHandlerService.SaveToFile(path, garmentService.GetAllGarments());
+        Console.WriteLine("File saved successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
 }
 
 void LoadGarmentsFromFile()
@@ -275,14 +309,6 @@ void LoadGarmentsFromFile()
 
 void DisplayTheWholeCollection()
 {
-    Console.WriteLine("\nThe json file includes these garments: \n");
-
-    var garments = jsonHandlerService.LoadFromFile(filePath);
-    foreach (var garment in garments)
-    {
-        Console.WriteLine(garment.ToString());
-    }
-
     Console.WriteLine("\nIn-memory garments: \n");
     foreach(var garment in garmentService.GetAllGarments())
     {
