@@ -67,5 +67,10 @@ namespace GarmentRecordSystem.Services
         {
             return new List<Garment>(_garments);
         }
+
+        public void ReplaceGarmentList(List<Garment> newList)
+        {
+            _garments = newList;
+        }
     }
 }
