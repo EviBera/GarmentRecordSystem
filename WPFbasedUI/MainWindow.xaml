@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFbasedUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Garment Record System" Height="600" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <!-- DataGrid displaying garment records -->
+        <DataGrid x:Name="dgGarments" AutoGenerateColumns="True" Margin="10" Grid.Row="0" Height="200" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow"/>
+
+        <!-- Form for adding or updating garments -->
+        <StackPanel Grid.Row="1" Margin="10">
+            <TextBox x:Name="txtBrandName" Margin="5" Height="25" GotFocus="Txt_GotFocus" LostFocus="Txt_LostFocus"/>
+            <DatePicker x:Name="dpPurchaseDate" Margin="5" Height="25"/>
+            <TextBox x:Name="txtColor" Margin="5" Height="25" GotFocus="Txt_GotFocus" LostFocus="Txt_LostFocus"/>
+            <ComboBox x:Name="cbSize" Margin="5" Height="25">
+                <ComboBoxItem Content="S"/>
+                <ComboBoxItem Content="M"/>
+                <ComboBoxItem Content="L"/>
+                <ComboBoxItem Content="XL"/>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <Button x:Name="btnAdd" Content="Add" Margin="5" Click="BtnAdd_Click"/>
+                <Button x:Name="btnUpdate" Content="Update" Margin="5" Click="BtnUpdate_Click"/>
+                <Button x:Name="btnDelete" Content="Delete" Margin="5" Click="BtnDelete_Click"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
