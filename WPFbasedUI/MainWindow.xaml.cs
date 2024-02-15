@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+
 
 namespace WPFbasedUI
 {
@@ -126,5 +128,42 @@ namespace WPFbasedUI
 
             cbSize.SelectedIndex = -1; // Clear the combo box selection
         }
+
+        private string OpenFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) // Or any specific directory
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                return openFileDialog.FileName;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void BtnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            string filePath = OpenFile();
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                try
+                {
+                    _garmentService.LoadGarments(filePath);
+                    LoadGarmentsIntoDataGrid(); // Refresh the DataGrid to show the loaded garments
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to load garments: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+
     }
 }

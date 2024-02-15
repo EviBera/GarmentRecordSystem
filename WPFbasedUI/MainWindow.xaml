@@ -30,6 +30,7 @@
                 <Button x:Name="btnAdd" Content="Add" Margin="5" Click="BtnAdd_Click"/>
                 <Button x:Name="btnUpdate" Content="Update" Margin="5" Click="BtnUpdate_Click"/>
                 <Button x:Name="btnDelete" Content="Delete" Margin="5" Click="BtnDelete_Click"/>
+                <Button x:Name="btnLoad" Content="Load" Margin="5" Click="BtnLoad_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>
