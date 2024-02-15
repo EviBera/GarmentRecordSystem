@@ -3,8 +3,8 @@ using GarmentRecordSystem.Services;
 using GarmentRecordSystem.Models;
 using System.Numerics;
 
-IGarmentService garmentService = new GarmentService();
 IJsonHandlerService jsonHandlerService = new JsonHandlerService();
+IGarmentService garmentService = new GarmentService(jsonHandlerService);
 
 HandleMainMenu();
 
@@ -336,8 +336,7 @@ void LoadGarmentsFromFile()
 
     try
     {
-        var garments = jsonHandlerService.LoadFromFile(path);
-        garmentService.ReplaceGarmentList(garments);
+        garmentService.LoadGarments(path);
         Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("File loaded successfully.");
         Console.ForegroundColor = ConsoleColor.White;

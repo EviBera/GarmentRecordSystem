@@ -10,7 +10,14 @@ namespace GarmentRecordSystem.Services
     public class GarmentService : IGarmentService
     {
 
-        private List<Garment> _garments = new List<Garment>();
+        private List<Garment> _garments;
+        private IJsonHandlerService _jsonHandlerService;
+
+        public GarmentService(IJsonHandlerService jsonHandlerService)
+        {
+            _jsonHandlerService = jsonHandlerService;
+            _garments = new List<Garment>();
+        }
 
         public void AddGarment(Garment garment)
         {
@@ -68,9 +75,9 @@ namespace GarmentRecordSystem.Services
             return new List<Garment>(_garments);
         }
 
-        public void ReplaceGarmentList(List<Garment> newList)
+        public void LoadGarments(string filePath)
         {
-            _garments = newList;
+            _garments = _jsonHandlerService.LoadFromFile(filePath);
         }
     }
 }

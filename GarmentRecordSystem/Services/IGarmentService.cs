@@ -15,6 +15,6 @@ namespace GarmentRecordSystem.Services
         Garment SearchGarment(uint garmentID);
         List<Garment> SortGarments(SortGarmentsCriteria sortBy);
         List<Garment> GetAllGarments();
-        void ReplaceGarmentList(List<Garment> newList);
+        void LoadGarments(string filePath);
     }
 }
