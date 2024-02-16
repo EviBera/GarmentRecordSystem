@@ -42,6 +42,8 @@ namespace WPFbasedUI
             txtSearch.Foreground = Brushes.Gray;
             txtDelete.Text = "Enter ID of garment to delete";
             txtDelete.Foreground = Brushes.Gray;
+            txtUpdate.Text = "Enter ID of garment to update";
+            txtUpdate.Foreground = Brushes.Gray;
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -170,7 +172,31 @@ namespace WPFbasedUI
 
         private void BtnSort_Click(object sender, RoutedEventArgs e)
         {
+            SortGarmentsCriteria criteria = SortGarmentsCriteria.GarmentID;
+            if (rbBrandName.IsChecked == true)
+            {
+                criteria = SortGarmentsCriteria.BrandName;
+            }
+            else if (rbPurchaseDate.IsChecked == true)
+            {
+                criteria = SortGarmentsCriteria.PurchaseDate;
+            }
+            else if (rbColor.IsChecked == true)
+            {
+                criteria = SortGarmentsCriteria.Color;
+            }
+            else if (rbSize.IsChecked == true)
+            {
+                criteria = SortGarmentsCriteria.Size;
+            }
+            else if (rbNone.IsChecked == true)
+            {
+                criteria = SortGarmentsCriteria.GarmentID; 
+            }
 
+            var sortedGarments = _garmentService.SortGarments(criteria);
+
+            dgGarments.ItemsSource = sortedGarments;
         }
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
