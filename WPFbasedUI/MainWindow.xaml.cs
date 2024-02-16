@@ -25,12 +25,13 @@ namespace WPFbasedUI
     public partial class MainWindow : Window
     {
         private readonly IGarmentService _garmentService;
+        private readonly IJsonHandlerService _jsonHandlerService;
 
         public MainWindow()
         {
             InitializeComponent();
-            IJsonHandlerService jsonHandlerService = new JsonHandlerService();
-            _garmentService = new GarmentService(jsonHandlerService);
+            _jsonHandlerService = new JsonHandlerService();
+            _garmentService = new GarmentService(_jsonHandlerService);
 
             LoadGarmentsIntoDataGrid();
 
@@ -173,7 +174,7 @@ namespace WPFbasedUI
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) // Or any specific directory
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             };
 
             if (openFileDialog.ShowDialog() == true)
@@ -253,8 +254,12 @@ namespace WPFbasedUI
                     }
                     else
                     {
-                        MessageBox.Show("Please enter a valid ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("Garment not found. Please enter a valid ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
 
@@ -265,7 +270,34 @@ namespace WPFbasedUI
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                DefaultExt = ".json", // Default file extension
+                FileName = "garments", // Default file name
+            };
 
+            // Show save file dialog box
+            bool? result = saveFileDialog.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                var filePath = saveFileDialog.FileName;
+
+                try
+                {
+                    var garments = _garmentService.GetAllGarments();
+
+                    _jsonHandlerService.SaveToFile(filePath, garments);
+
+                    MessageBox.Show("Data saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to save data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
