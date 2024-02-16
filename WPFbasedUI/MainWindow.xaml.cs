@@ -26,6 +26,8 @@ namespace WPFbasedUI
     {
         private readonly IGarmentService _garmentService;
         private readonly IJsonHandlerService _jsonHandlerService;
+        private bool _unsavedChanges = false;
+
 
         public MainWindow()
         {
@@ -73,7 +75,7 @@ namespace WPFbasedUI
 
                 LoadGarmentsIntoDataGrid(); // Refresh the list showing garments
                 MessageBox.Show("Garment added successfully.");
-
+                _unsavedChanges = true;
                 ClearInputFields();
             }
             catch (Exception ex)
@@ -97,6 +99,7 @@ namespace WPFbasedUI
                     if (garmentToDelete != null)
                     {
                         _garmentService.DeleteGarment(garmentID);
+                        _unsavedChanges = true;
                         LoadGarmentsIntoDataGrid();
                     }
                     else
@@ -290,6 +293,7 @@ namespace WPFbasedUI
                     var garments = _garmentService.GetAllGarments();
 
                     _jsonHandlerService.SaveToFile(filePath, garments);
+                    _unsavedChanges = false;
 
                     MessageBox.Show("Data saved successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -301,7 +305,31 @@ namespace WPFbasedUI
         }
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
+            this.Close();
+        }
 
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            AttemptCloseWindow(e);
+        }
+
+        private void AttemptCloseWindow(System.ComponentModel.CancelEventArgs e = null)
+        {
+            if (_unsavedChanges)
+            {
+                var result = MessageBox.Show("You have unsaved changes. Are you sure you want to exit?", "Unsaved Changes", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.No)
+                {
+                    // Prevent the window from closing
+                    if (e != null) e.Cancel = true;
+                    return;
+                }
+            }
+
+            // If there are no unsaved changes or the user chooses to exit, close the window
+            // If called from the Exit button, e will be null, so check before setting
+            if (e != null) e.Cancel = false;
+            else this.Close(); // Explicitly close the window if not already closing
         }
 
 
