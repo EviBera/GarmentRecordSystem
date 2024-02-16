@@ -38,6 +38,10 @@ namespace WPFbasedUI
             txtBrandName.Foreground = Brushes.Gray;
             txtColor.Text = "Color";
             txtColor.Foreground = Brushes.Gray;
+            txtSearch.Text = "Enter ID";
+            txtSearch.Foreground = Brushes.Gray;
+            txtDelete.Text = "Enter ID of garment to delete";
+            txtDelete.Foreground = Brushes.Gray;
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -162,6 +166,23 @@ namespace WPFbasedUI
                     MessageBox.Show($"Failed to load garments: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+
+        private void BtnSort_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void BtnSearch_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void BtnExit_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
 
