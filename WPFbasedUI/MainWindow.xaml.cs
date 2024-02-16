@@ -198,10 +198,38 @@ namespace WPFbasedUI
 
             dgGarments.ItemsSource = sortedGarments;
         }
+        private void TxtSearch_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtSearch.Text == "Enter ID")
+            {
+                txtSearch.Text = ""; // Clear the placeholder text
+                txtSearch.Foreground = Brushes.Black;
+            }
+        }
+
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != "Enter ID")
+            {
+                if (uint.TryParse(txtSearch.Text, out uint garmentID))
+                {
+                    var foundGarment = _garmentService.SearchGarment(garmentID);
+                    if (foundGarment != null)
+                    {
+                        dgGarments.ItemsSource = new List<Garment> { foundGarment };
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter a valid ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+            }
 
+            // After search, reset the placeholder text
+            txtSearch.Text = "Enter ID";
+            txtSearch.Foreground = Brushes.Gray;
         }
+
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
 
