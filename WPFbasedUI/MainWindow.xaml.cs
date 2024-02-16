@@ -88,7 +88,40 @@ namespace WPFbasedUI
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-            // Implementation for deleting a selected garment record
+            if (!string.IsNullOrWhiteSpace(txtDelete.Text) && txtDelete.Text != "Enter ID of garment to delete")
+            {
+                if (uint.TryParse(txtDelete.Text, out uint garmentID))
+                {
+                    var garmentToDelete = _garmentService.SearchGarment(garmentID);
+                    if (garmentToDelete != null)
+                    {
+                        _garmentService.DeleteGarment(garmentID);
+                        LoadGarmentsIntoDataGrid();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter a valid ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+
+            // After search, reset the placeholder text
+            txtDelete.Text = "Enter ID of garment to delete";
+            txtDelete.Foreground = Brushes.Gray;
+        }
+
+        private void TxtDelete_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtDelete.Text == "Enter ID of garment to delete")
+            {
+                txtDelete.Text = ""; // Clear the placeholder text
+                txtDelete.Foreground = Brushes.Black;
+            }
         }
 
         private void LoadGarmentsIntoDataGrid()

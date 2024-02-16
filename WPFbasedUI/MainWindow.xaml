@@ -96,7 +96,7 @@
             <TextBlock Margin="5">
                 Delete garment
             </TextBlock>
-            <TextBox x:Name="txtDelete" Margin="5" Height="25" GotFocus="Txt_GotFocus" LostFocus="Txt_LostFocus"/>
+            <TextBox x:Name="txtDelete" Margin="5" Height="25" GotFocus="TxtDelete_GotFocus"/>
             <StackPanel HorizontalAlignment="Left">
                 <Button x:Name="btnDelete" Content="Delete" Width="100" Margin="20,10,10,10" Click="BtnDelete_Click"/>
             </StackPanel>
