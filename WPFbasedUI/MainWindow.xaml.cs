@@ -37,51 +37,12 @@ namespace WPFbasedUI
 
             LoadGarmentsIntoDataGrid();
 
-            txtBrandName.Text = "Brand Name";
-            txtBrandName.Foreground = Brushes.Gray;
-            txtColor.Text = "Color";
-            txtColor.Foreground = Brushes.Gray;
             txtSearch.Text = "Enter ID";
             txtSearch.Foreground = Brushes.Gray;
             txtDelete.Text = "Enter ID of garment to delete";
             txtDelete.Foreground = Brushes.Gray;
             txtUpdate.Text = "Enter ID of garment to update";
             txtUpdate.Foreground = Brushes.Gray;
-        }
-
-        private void BtnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var brandName = txtBrandName.Text.Equals("Brand Name") ? "" : txtBrandName.Text; // Check placeholder
-                var purchaseDate = dpPurchaseDate.SelectedDate.HasValue ? dpPurchaseDate.SelectedDate.Value.Date : throw new InvalidOperationException("Purchase date is required.");
-                var color = txtColor.Text.Equals("Color") ? "" : txtColor.Text; // Check placeholder
-
-                // Correctly extract the size value from the ComboBox
-                if (cbSize.SelectedItem == null) throw new InvalidOperationException("Size selection is required.");
-                var sizeItem = cbSize.SelectedItem as ComboBoxItem;
-                if (sizeItem == null) throw new InvalidOperationException("Invalid size selection.");
-                var sizeValue = sizeItem.Content.ToString();
-                var size = (GarmentRecordSystem.Models.Size)Enum.Parse(typeof(GarmentRecordSystem.Models.Size), sizeValue);
-
-                // Ensure non-placeholder values are provided
-                if (string.IsNullOrWhiteSpace(brandName) || string.IsNullOrWhiteSpace(color))
-                {
-                    throw new InvalidOperationException("Brand name and color are required.");
-                }
-
-                var garment = new Garment(brandName, new DateOnly(purchaseDate.Year, purchaseDate.Month, purchaseDate.Day), color, size);
-                _garmentService.AddGarment(garment);
-
-                LoadGarmentsIntoDataGrid(); // Refresh the list showing garments
-                MessageBox.Show("Garment added successfully.");
-                _unsavedChanges = true;
-                ClearInputFields();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
         }
 
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
@@ -137,40 +98,6 @@ namespace WPFbasedUI
             dgGarments.ItemsSource = garments;
         }
 
-        private void Txt_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = sender as TextBox;
-            // Assuming you set the initial text to your placeholder text
-            if (textBox != null && (textBox.Text == "Brand Name" || textBox.Text == "Color"))
-            {
-                textBox.Text = "";
-                textBox.Foreground = Brushes.Black; // Reset to default text color
-            }
-        }
-
-        private void Txt_LostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox textBox = sender as TextBox;
-            if (textBox != null && string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Foreground = Brushes.Gray; // Placeholder text color
-                textBox.Text = textBox.Name == "txtBrandName" ? "Brand Name" : "Color"; // Set the placeholder text based on the TextBox's name
-            }
-        }
-
-        private void ClearInputFields()
-        {
-            // Reset the input fields to their initial state or placeholder text
-            txtBrandName.Text = "Brand Name";
-            txtBrandName.Foreground = Brushes.Gray;
-
-            dpPurchaseDate.SelectedDate = null; // Clear the date selection
-
-            txtColor.Text = "Color";
-            txtColor.Foreground = Brushes.Gray;
-
-            cbSize.SelectedIndex = -1; // Clear the combo box selection
-        }
 
         private string OpenFile()
         {
@@ -333,5 +260,17 @@ namespace WPFbasedUI
         }
 
 
+        private void btnReg_Click(object sender, RoutedEventArgs e)
+        {
+            FormWindow_AddGarment formWindow = new FormWindow_AddGarment(_garmentService);
+            formWindow.GarmentAdded += AddGarmentForm_GarmentAdded;
+            formWindow.ShowDialog();
+        }
+
+        private void AddGarmentForm_GarmentAdded(object sender, EventArgs e)
+        {
+            _unsavedChanges = true;
+            LoadGarmentsIntoDataGrid();
+        }
     }
 }

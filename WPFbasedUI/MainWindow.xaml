@@ -66,18 +66,8 @@
             <TextBlock Margin="5">
                 Add a new garment
             </TextBlock>
-            <TextBox x:Name="txtBrandName" Margin="5" Height="25" GotFocus="Txt_GotFocus" LostFocus="Txt_LostFocus"/>
-            <DatePicker x:Name="dpPurchaseDate" Margin="5" Height="25"/>
-            <TextBox x:Name="txtColor" Margin="5" Height="25" GotFocus="Txt_GotFocus" LostFocus="Txt_LostFocus"/>
-            <ComboBox x:Name="cbSize" Margin="5" Height="25">
-                <ComboBoxItem IsEnabled="False" Content="Select Size"/>
-                <ComboBoxItem Content="S"/>
-                <ComboBoxItem Content="M"/>
-                <ComboBoxItem Content="L"/>
-                <ComboBoxItem Content="XL"/>
-            </ComboBox>
             <StackPanel HorizontalAlignment="Left">
-                <Button x:Name="btnAdd" Content="Add" Margin="20,10,10,10" Width="100" Click="BtnAdd_Click"/>
+                <Button x:Name="btnReg" Content="Registration form" Margin="20,10,10,10" Width="100" Click="btnReg_Click"/>
             </StackPanel>
         </StackPanel>
         
@@ -86,7 +76,7 @@
             <TextBlock Margin="5">
                 Update a garment
             </TextBlock>
-            <TextBox x:Name="txtUpdate" Margin="5" Height="25" GotFocus="Txt_GotFocus" LostFocus="Txt_LostFocus"/>
+            <TextBox x:Name="txtUpdate" Margin="5" Height="25" /> <!-- GotFocus="Txt_GotFocus" LostFocus="Txt_LostFocus" -->
             <StackPanel HorizontalAlignment="Left">
             <Button x:Name="btnUpdate" Content="Update" Margin="20,10,10,10" Width="100" Click="BtnUpdate_Click"/>
             </StackPanel>
