@@ -43,7 +43,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding GarmentID}" />
                 <DataGridTextColumn Header="Brand name" Binding="{Binding BrandName}" />
-                <DataGridTextColumn Header="Date of purchase (m/d/y)" Binding="{Binding PurchaseDate}" />
+                <DataGridTextColumn Header="Date of purchase (m/d/y)" Binding="{Binding PurchaseDate, StringFormat='MM/dd/yyyy'}" />
                 <DataGridTextColumn Header="Color" Binding="{Binding Color}" />
                 <DataGridTextColumn Header="Size" Binding="{Binding Size}" />
             </DataGrid.Columns>
