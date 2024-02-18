@@ -88,6 +88,14 @@ namespace WPFbasedUI
                 txtDelete.Foreground = Brushes.Black;
             }
         }
+        private void TxtDelete_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtDelete.Text))
+            {
+                txtDelete.Text = "Enter ID of garment to delete";
+                txtDelete.Foreground = Brushes.Gray;
+            }
+        }
 
         private void LoadGarmentsIntoDataGrid()
         {
@@ -168,6 +176,16 @@ namespace WPFbasedUI
             {
                 txtSearch.Text = ""; // Clear the placeholder text
                 txtSearch.Foreground = Brushes.Black;
+            }
+        }
+
+        private void TxtSearch_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // If the TextBox is empty, restore the placeholder text
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                txtSearch.Text = "Enter ID"; 
+                txtSearch.Foreground = Brushes.Gray; 
             }
         }
 

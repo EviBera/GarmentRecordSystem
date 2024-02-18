@@ -55,13 +55,13 @@
             <TextBlock Margin="5">
                 Serach garment
             </TextBlock>
-            <TextBox x:Name="txtSearch" Margin="5" Height="25" GotFocus="TxtSearch_GotFocus"/>
+            <TextBox x:Name="txtSearch" Margin="5" Height="25" GotFocus="TxtSearch_GotFocus" LostFocus="TxtSearch_LostFocus"/>
             <StackPanel HorizontalAlignment="Left">
                 <Button x:Name="btnSearch" Content="Search" Margin="20,10,10,10" Width="100"  Click="BtnSearch_Click"/>
             </StackPanel>
         </StackPanel>
 
-        <!-- Form for adding garments -->
+        <!-- Registering garments -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
             <TextBlock Margin="5">
                 Add a new garment
@@ -87,7 +87,7 @@
             <TextBlock Margin="5">
                 Delete garment
             </TextBlock>
-            <TextBox x:Name="txtDelete" Margin="5" Height="25" GotFocus="TxtDelete_GotFocus"/>
+            <TextBox x:Name="txtDelete" Margin="5" Height="25" GotFocus="TxtDelete_GotFocus" LostFocus="TxtDelete_LostFocus"/>
             <StackPanel HorizontalAlignment="Left">
                 <Button x:Name="btnDelete" Content="Delete" Width="100" Margin="20,10,10,10" Click="BtnDelete_Click"/>
             </StackPanel>
