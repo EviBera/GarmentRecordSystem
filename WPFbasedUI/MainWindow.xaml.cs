@@ -278,7 +278,7 @@ namespace WPFbasedUI
         }
 
 
-        private void btnReg_Click(object sender, RoutedEventArgs e)
+        private void BtnReg_Click(object sender, RoutedEventArgs e)
         {
             FormWindow_AddGarment formWindow = new FormWindow_AddGarment(_garmentService);
             formWindow.GarmentAdded += AddGarmentForm_GarmentAdded;
@@ -289,6 +289,25 @@ namespace WPFbasedUI
         {
             _unsavedChanges = true;
             LoadGarmentsIntoDataGrid();
+        }
+
+        private void TxtUpdate_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtUpdate.Text == "Enter ID of garment to update")
+            {
+                txtUpdate.Text = ""; // Clear the placeholder text
+                txtUpdate.Foreground = Brushes.Black;
+            }
+        }
+
+        private void TxtUpdate_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // If the TextBox is empty, restore the placeholder text
+            if (string.IsNullOrWhiteSpace(txtUpdate.Text))
+            {
+                txtUpdate.Text = "Enter ID of garment to update";
+                txtUpdate.Foreground = Brushes.Gray;
+            }
         }
     }
 }

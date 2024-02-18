@@ -49,9 +49,18 @@
             </DataGrid.Columns>
         </DataGrid>
 
-
-        <!-- Search garment -->
+        <!-- Registering garments -->
         <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
+            <TextBlock Margin="5">
+                Add a new garment
+            </TextBlock>
+            <StackPanel HorizontalAlignment="Left">
+                <Button x:Name="btnReg" Content="Registration form" Margin="20,10,10,10" Width="100" Click="BtnReg_Click"/>
+            </StackPanel>
+        </StackPanel>
+        
+        <!-- Search garment -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
             <TextBlock Margin="5">
                 Serach garment
             </TextBlock>
@@ -61,22 +70,12 @@
             </StackPanel>
         </StackPanel>
 
-        <!-- Registering garments -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
-            <TextBlock Margin="5">
-                Add a new garment
-            </TextBlock>
-            <StackPanel HorizontalAlignment="Left">
-                <Button x:Name="btnReg" Content="Registration form" Margin="20,10,10,10" Width="100" Click="btnReg_Click"/>
-            </StackPanel>
-        </StackPanel>
-        
-        <!-- Form for updating garments -->
+        <!-- Updating garments -->
         <StackPanel Grid.Row="1" Grid.Column="2" Margin="10">
             <TextBlock Margin="5">
                 Update a garment
             </TextBlock>
-            <TextBox x:Name="txtUpdate" Margin="5" Height="25" /> <!-- GotFocus="Txt_GotFocus" LostFocus="Txt_LostFocus" -->
+            <TextBox x:Name="txtUpdate" Margin="5" Height="25" GotFocus="TxtUpdate_GotFocus" LostFocus="TxtUpdate_LostFocus"/> <!-- GotFocus="Txt_GotFocus" LostFocus="Txt_LostFocus" -->
             <StackPanel HorizontalAlignment="Left">
             <Button x:Name="btnUpdate" Content="Update" Margin="20,10,10,10" Width="100" Click="BtnUpdate_Click"/>
             </StackPanel>
