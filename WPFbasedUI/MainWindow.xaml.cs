@@ -47,7 +47,37 @@ namespace WPFbasedUI
 
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            // Implementation for updating an existing garment record
+            if (!string.IsNullOrWhiteSpace(txtUpdate.Text) && txtUpdate.Text != "Enter ID of garment to update")
+            {
+                if (uint.TryParse(txtUpdate.Text, out uint garmentID))
+                {
+                    var garmentToUpdate = _garmentService.SearchGarment(garmentID);
+                    if (garmentToUpdate != null)
+                    {
+                        FormWindow_UpdateGarment formWindow = new FormWindow_UpdateGarment(_garmentService, garmentToUpdate);
+                        formWindow.GarmentUpdated += UpdateGarmentForm_GarmentUpdated;
+                        formWindow.ShowDialog();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter a valid ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+
+            txtDelete.Text = "Enter ID of garment to delete";
+            txtDelete.Foreground = Brushes.Gray;
+        }
+
+        private void UpdateGarmentForm_GarmentUpdated(object sender, EventArgs e)
+        {
+            _unsavedChanges = true;
+            LoadGarmentsIntoDataGrid();
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)

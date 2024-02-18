@@ -1,0 +1,31 @@
+﻿<Window x:Class="WPFbasedUI.FormWindow_UpdateGarment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFbasedUI"
+        mc:Ignorable="d"
+        Title="Update garment" Height="300" Width="400">
+    <Grid>
+        <!--Update form-->
+        <StackPanel Margin="10">
+            <TextBlock HorizontalAlignment="Center">
+                Correct current data then click update.
+            </TextBlock>
+            <TextBox x:Name="txtBrandName" Margin="5" Height="25"/>
+            <DatePicker x:Name="dpPurchaseDate" Margin="5" Height="25"/>
+            <TextBox x:Name="txtColor" Margin="5" Height="25"/>
+            <ComboBox x:Name="cbSize" Margin="5" Height="25">
+                <ComboBoxItem Content="S"/>
+                <ComboBoxItem Content="M"/>
+                <ComboBoxItem Content="L"/>
+                <ComboBoxItem Content="XL"/>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="btnUpdate" Content="Update" Margin="10,40,10,10" Width="100" Click="btnUpdate_Click"/>
+            <Button x:Name="btnExit" Content="Exit" Margin="10,40,10,10" Width="100" Click="btnExit_Click"/>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</Window>
