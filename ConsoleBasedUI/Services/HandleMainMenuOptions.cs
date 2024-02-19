@@ -1,14 +1,9 @@
 ﻿using GarmentRecordSystem.Models;
 using GarmentRecordSystem.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleBasedUI.Services
 {
-    public class HandleMainMenuOptions
+    public class HandleMainMenuOptions : IHandleMainMenu
     {
         private IJsonHandlerService _jsonHandlerService;
         private IGarmentService _garmentService;
@@ -503,5 +498,9 @@ namespace ConsoleBasedUI.Services
             return newSize;
         }
 
+        public void Exit(ref bool exit)
+        {
+            exit = true;
+        }
     }
 }

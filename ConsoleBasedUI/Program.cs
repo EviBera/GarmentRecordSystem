@@ -1,10 +1,5 @@
-﻿using GarmentRecordSystem;
-using GarmentRecordSystem.Services;
-using GarmentRecordSystem.Models;
-using System.Numerics;
-using System.Runtime.CompilerServices;
+﻿using ConsoleBasedUI.Services;
 using ConsoleBasedUI.UI;
-using ConsoleBasedUI.Services;
 
 Display display = new();
 Input input = new();
@@ -67,7 +62,7 @@ void HandleMainMenu()
                 handleMainMenu.DisplayTheWholeCollection();
                 break;
             case 9:
-                exit = true;
+                handleMainMenu.Exit(ref exit);
                 break;
         
             default:
