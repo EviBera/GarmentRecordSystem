@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GarmentRecordSystem.Models
+﻿namespace GarmentRecordSystem.Models
 {
     public enum Size
     {
