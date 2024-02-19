@@ -1,20 +1,10 @@
 ﻿using GarmentRecordSystem.Models;
 using GarmentRecordSystem.Services;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
 
 
 namespace WPFbasedUI
@@ -27,134 +17,26 @@ namespace WPFbasedUI
         private readonly IGarmentService _garmentService;
         private readonly IJsonHandlerService _jsonHandlerService;
         private bool _unsavedChanges = false;
+        private Placeholders _placeholders;
 
 
         public MainWindow()
         {
             InitializeComponent();
+
             _jsonHandlerService = new JsonHandlerService();
             _garmentService = new GarmentService(_jsonHandlerService);
+            _placeholders = new Placeholders();
 
             LoadGarmentsIntoDataGrid();
 
-            txtSearch.Text = "Enter ID";
-            txtSearch.Foreground = Brushes.Gray;
-            txtDelete.Text = "Enter ID of garment to delete";
-            txtDelete.Foreground = Brushes.Gray;
-            txtUpdate.Text = "Enter ID of garment to update";
-            txtUpdate.Foreground = Brushes.Gray;
-        }
-
-        private void BtnUpdate_Click(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(txtUpdate.Text) && txtUpdate.Text != "Enter ID of garment to update")
-            {
-                if (uint.TryParse(txtUpdate.Text, out uint garmentID))
-                {
-                    var garmentToUpdate = _garmentService.SearchGarment(garmentID);
-                    if (garmentToUpdate != null)
-                    {
-                        FormWindow_UpdateGarment formWindow = new FormWindow_UpdateGarment(_garmentService, garmentToUpdate);
-                        formWindow.GarmentUpdated += UpdateGarmentForm_GarmentUpdated;
-                        formWindow.ShowDialog();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Please enter a valid ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-
-                }
-                else
-                {
-                    MessageBox.Show("Please enter a number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-
-            txtDelete.Text = "Enter ID of garment to delete";
-            txtDelete.Foreground = Brushes.Gray;
-        }
-
-        private void UpdateGarmentForm_GarmentUpdated(object sender, EventArgs e)
-        {
-            _unsavedChanges = true;
-            LoadGarmentsIntoDataGrid();
-        }
-
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(txtDelete.Text) && txtDelete.Text != "Enter ID of garment to delete")
-            {
-                if (uint.TryParse(txtDelete.Text, out uint garmentID))
-                {
-                    var garmentToDelete = _garmentService.SearchGarment(garmentID);
-                    if (garmentToDelete != null)
-                    {
-                        _garmentService.DeleteGarment(garmentID);
-                        _unsavedChanges = true;
-                        LoadGarmentsIntoDataGrid();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Please enter a valid ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
-
-                }
-                else
-                {
-                    MessageBox.Show("Please enter a number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-
-            // After search, reset the placeholder text
-            txtDelete.Text = "Enter ID of garment to delete";
-            txtDelete.Foreground = Brushes.Gray;
-        }
-
-        private void TxtDelete_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtDelete.Text == "Enter ID of garment to delete")
-            {
-                txtDelete.Text = ""; // Clear the placeholder text
-                txtDelete.Foreground = Brushes.Black;
-            }
-        }
-        private void TxtDelete_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtDelete.Text))
-            {
-                txtDelete.Text = "Enter ID of garment to delete";
-                txtDelete.Foreground = Brushes.Gray;
-            }
-        }
-
-        private void LoadGarmentsIntoDataGrid()
-        {
-            // Retrieve all garments from the service
-            var garments = _garmentService.GetAllGarments();
-
-            // Bind the garments to the DataGrid
-            dgGarments.ItemsSource = garments;
+            SetSearchText();
+            SetDeleteText();
+            SetUpdateText();
         }
 
 
-        private string OpenFile()
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                return openFileDialog.FileName;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
+        //Handle load button
         private void BtnLoad_Click(object sender, RoutedEventArgs e)
         {
             string filePath = OpenFile();
@@ -172,6 +54,8 @@ namespace WPFbasedUI
             }
         }
 
+
+        //Handle sorting
         private void BtnSort_Click(object sender, RoutedEventArgs e)
         {
             SortGarmentsCriteria criteria = SortGarmentsCriteria.GarmentID;
@@ -193,35 +77,34 @@ namespace WPFbasedUI
             }
             else if (rbNone.IsChecked == true)
             {
-                criteria = SortGarmentsCriteria.GarmentID; 
+                criteria = SortGarmentsCriteria.GarmentID;
             }
 
             var sortedGarments = _garmentService.SortGarments(criteria);
 
             dgGarments.ItemsSource = sortedGarments;
         }
-        private void TxtSearch_GotFocus(object sender, RoutedEventArgs e)
+
+
+        //Handle add section
+        private void BtnReg_Click(object sender, RoutedEventArgs e)
         {
-            if (txtSearch.Text == "Enter ID")
-            {
-                txtSearch.Text = ""; // Clear the placeholder text
-                txtSearch.Foreground = Brushes.Black;
-            }
+            FormWindow_AddGarment formWindow = new FormWindow_AddGarment(_garmentService);
+            formWindow.GarmentAdded += AddGarmentForm_GarmentAdded;
+            formWindow.ShowDialog();
         }
 
-        private void TxtSearch_LostFocus(object sender, RoutedEventArgs e)
+        private void AddGarmentForm_GarmentAdded(object sender, EventArgs e)
         {
-            // If the TextBox is empty, restore the placeholder text
-            if (string.IsNullOrWhiteSpace(txtSearch.Text))
-            {
-                txtSearch.Text = "Enter ID"; 
-                txtSearch.Foreground = Brushes.Gray; 
-            }
+            _unsavedChanges = true;
+            LoadGarmentsIntoDataGrid();
         }
 
+
+        //Handle search section
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != "Enter ID")
+            if (!string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != _placeholders.SearchText)
             {
                 if (uint.TryParse(txtSearch.Text, out uint garmentID))
                 {
@@ -241,11 +124,125 @@ namespace WPFbasedUI
                 }
             }
 
-            // After search, reset the placeholder text
-            txtSearch.Text = "Enter ID";
-            txtSearch.Foreground = Brushes.Gray;
+            SetSearchText();
         }
 
+        private void TxtSearch_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtSearch.Text == _placeholders.SearchText)
+            {
+                txtSearch.Text = ""; // Clear the placeholder text
+                txtSearch.Foreground = Brushes.Black;
+            }
+        }
+
+        private void TxtSearch_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // If the TextBox is empty, restore the placeholder text
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                SetSearchText();
+            }
+        }
+
+
+        //Handle update section
+        private void BtnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtUpdate.Text) && txtUpdate.Text != _placeholders.UpdateText)
+            {
+                if (uint.TryParse(txtUpdate.Text, out uint garmentID))
+                {
+                    var garmentToUpdate = _garmentService.SearchGarment(garmentID);
+                    if (garmentToUpdate != null)
+                    {
+                        FormWindow_UpdateGarment formWindow = new FormWindow_UpdateGarment(_garmentService, garmentToUpdate);
+                        formWindow.GarmentUpdated += UpdateGarmentForm_GarmentUpdated;
+                        formWindow.ShowDialog();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter a valid ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            SetUpdateText();
+        }
+
+        private void UpdateGarmentForm_GarmentUpdated(object sender, EventArgs e)
+        {
+            _unsavedChanges = true;
+            LoadGarmentsIntoDataGrid();
+        }
+
+        private void TxtUpdate_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtUpdate.Text == _placeholders.UpdateText)
+            {
+                txtUpdate.Text = ""; // Clear the placeholder text
+                txtUpdate.Foreground = Brushes.Black;
+            }
+        }
+
+        private void TxtUpdate_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // If the TextBox is empty, restore the placeholder text
+            if (string.IsNullOrWhiteSpace(txtUpdate.Text))
+            {
+                SetUpdateText();
+            }
+        }
+
+
+        //Handle delete section
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtDelete.Text) && txtDelete.Text != _placeholders.DeleteText)
+            {
+                if (uint.TryParse(txtDelete.Text, out uint garmentID))
+                {
+                    var garmentToDelete = _garmentService.SearchGarment(garmentID);
+                    if (garmentToDelete != null)
+                    {
+                        _garmentService.DeleteGarment(garmentID);
+                        _unsavedChanges = true;
+                        LoadGarmentsIntoDataGrid();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter a valid ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a number.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            SetDeleteText();
+        }
+
+        private void TxtDelete_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtDelete.Text == _placeholders.DeleteText)
+            {
+                txtDelete.Text = ""; // Clear the placeholder text
+                txtDelete.Foreground = Brushes.Black;
+            }
+        }
+        private void TxtDelete_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtDelete.Text))
+            {
+                SetDeleteText();
+            }
+        }
+
+
+        //Handle save button
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -278,11 +275,15 @@ namespace WPFbasedUI
                 }
             }
         }
+
+
+        //Handle exit button
         private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
+        //Closing the app
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             AttemptCloseWindow(e);
@@ -301,43 +302,55 @@ namespace WPFbasedUI
                 }
             }
 
-            // If there are no unsaved changes or the user chooses to exit, close the window
+            // If there aren't any unsaved changes or the user chooses to exit, close the window
             // If called from the Exit button, e will be null, so check before setting
             if (e != null) e.Cancel = false;
             else this.Close(); // Explicitly close the window if not already closing
         }
 
 
-        private void BtnReg_Click(object sender, RoutedEventArgs e)
+        //Further helper methods
+        private void LoadGarmentsIntoDataGrid()
         {
-            FormWindow_AddGarment formWindow = new FormWindow_AddGarment(_garmentService);
-            formWindow.GarmentAdded += AddGarmentForm_GarmentAdded;
-            formWindow.ShowDialog();
+            var garments = _garmentService.GetAllGarments();
+
+            // Bind the garments to the DataGrid
+            dgGarments.ItemsSource = garments;
         }
 
-        private void AddGarmentForm_GarmentAdded(object sender, EventArgs e)
+        private string OpenFile()
         {
-            _unsavedChanges = true;
-            LoadGarmentsIntoDataGrid();
-        }
-
-        private void TxtUpdate_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtUpdate.Text == "Enter ID of garment to update")
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                txtUpdate.Text = ""; // Clear the placeholder text
-                txtUpdate.Foreground = Brushes.Black;
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                return openFileDialog.FileName;
+            }
+            else
+            {
+                return null;
             }
         }
 
-        private void TxtUpdate_LostFocus(object sender, RoutedEventArgs e)
+        private void SetSearchText()
         {
-            // If the TextBox is empty, restore the placeholder text
-            if (string.IsNullOrWhiteSpace(txtUpdate.Text))
-            {
-                txtUpdate.Text = "Enter ID of garment to update";
-                txtUpdate.Foreground = Brushes.Gray;
-            }
+            txtSearch.Text = _placeholders.SearchText;
+            txtSearch.Foreground = Brushes.Gray;
+        }
+        private void SetDeleteText()
+        {
+            txtDelete.Text = _placeholders.DeleteText;
+            txtDelete.Foreground = Brushes.Gray;
+        }
+
+        private void SetUpdateText()
+        {
+            txtUpdate.Text = _placeholders.UpdateText;
+            txtUpdate.Foreground = Brushes.Gray;
         }
     }
 }
