@@ -1,9 +1,4 @@
 ﻿using GarmentRecordSystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GarmentRecordSystem.Services
 {
@@ -11,7 +6,7 @@ namespace GarmentRecordSystem.Services
     {
 
         private List<Garment> _garments;
-        private IJsonHandlerService _jsonHandlerService;
+        private readonly IJsonHandlerService _jsonHandlerService;
 
         public GarmentService(IJsonHandlerService jsonHandlerService)
         {
@@ -29,7 +24,7 @@ namespace GarmentRecordSystem.Services
             _garments.RemoveAll(g => g.GarmentID == garmentID);
         }
 
-        public Garment SearchGarment(uint garmentID)
+        public Garment? SearchGarment(uint garmentID)
         {
             return _garments.FirstOrDefault(g => g.GarmentID == garmentID);
         }
@@ -69,12 +64,13 @@ namespace GarmentRecordSystem.Services
             }
         }
 
-        //Provide a safe copy for checking the app
+        //Provide a safe copy
         public List<Garment> GetAllGarments()
         {
             return new List<Garment>(_garments);
         }
 
+        //Provide access to the user-chosen file
         public void LoadGarments(string filePath)
         {
             _garments = _jsonHandlerService.LoadFromFile(filePath);
