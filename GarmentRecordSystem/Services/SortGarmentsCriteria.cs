@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GarmentRecordSystem.Services
+﻿namespace GarmentRecordSystem.Services
 {
     public enum SortGarmentsCriteria
     {
