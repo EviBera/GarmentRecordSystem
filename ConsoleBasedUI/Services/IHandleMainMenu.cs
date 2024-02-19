@@ -9,6 +9,7 @@
         void SortGarments();
         void SaveGarmentsToFile();
         void LoadGarmentsFromFile();
+        void DisplayTheWholeCollection();
         void Exit(ref bool exit);
     }
 }

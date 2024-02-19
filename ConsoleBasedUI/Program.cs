@@ -3,7 +3,7 @@ using ConsoleBasedUI.UI;
 
 Display display = new();
 Input input = new();
-HandleMainMenuOptions handleMainMenu = new();
+IHandleMainMenu handleMainMenu = new HandleMainMenuOptions();
 
 HandleMainMenu();
 
